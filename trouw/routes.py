@@ -3,25 +3,10 @@ import secrets
 from PIL import Image
 from flask import render_template, flash, redirect, url_for, request
 from trouw import app, db, bcrypt
-from trouw.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from trouw.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from trouw.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
-
-posts = [
-    {
-        'author': 'Thomas Vanneuville',
-        'title': 'First one w00t',
-        'content': 'Tga nog een einde machtig zien!',
-        'date_posted': 'Mei 23, 2018'
-    },
-    {
-        'author': 'Frodo',
-        'title': 'WOEF',
-        'content': 'Waar is men frodog?',
-        'date_posted': 'Mei 23, 2018'
-    }
-]
 
 @app.route("/")
 @app.route("/home")
@@ -36,9 +21,18 @@ def about():
 def fotos():
     return render_template('fotos.html', title = "Foto's")
 
-@app.route("/forum")
+@app.route("/forum", methods=['GET', 'POST'])
+@login_required
 def forum():
-    return render_template('forum.html',posts=posts)
+    form = PostForm()
+    posts = Post.query.all()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data,author= current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('forum'))
+    return render_template('forum.html',posts=posts, form=form)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():

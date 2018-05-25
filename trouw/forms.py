@@ -46,3 +46,8 @@ class UpdateAccountForm(FlaskForm):
         user = User.query.filter_by(username=name.data).first()
         if user:
             raise ValidationError('Naam Bestaal Al')
+
+class PostForm(FlaskForm):
+    title = StringField('onderwerp', validators=[DataRequired()])
+    content = TextAreaField('Tekst', validators=[DataRequired()])
+    submit= SubmitField('Post')
