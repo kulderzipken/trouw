@@ -1,7 +1,7 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, abort
 from trouw import app, db, bcrypt
 from trouw.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from trouw.models import User, Post
@@ -27,12 +27,25 @@ def forum():
     form = PostForm()
     posts = Post.query.all()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data,author= current_user)
+        post = Post(content=form.content.data, author= current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Your post has been created!', 'success')
+        flash('Je bericht is geplaatst!', 'success')
         return redirect(url_for('forum'))
     return render_template('forum.html',posts=posts, form=form)
+
+
+@app.route("/post/<int:post_id>/delete", methods=['GET', 'POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Je bericht is verwijderd!', 'success')
+    return redirect(url_for('forum'))
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():

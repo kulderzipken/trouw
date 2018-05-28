@@ -48,6 +48,5 @@ class UpdateAccountForm(FlaskForm):
             raise ValidationError('Naam Bestaal Al')
 
 class PostForm(FlaskForm):
-    title = StringField('onderwerp', validators=[DataRequired()])
     content = TextAreaField('Tekst', validators=[DataRequired()])
     submit= SubmitField('Post')
