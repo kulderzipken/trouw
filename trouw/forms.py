@@ -50,3 +50,17 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     content = TextAreaField('Tekst', validators=[DataRequired()])
     submit= SubmitField('Post')
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit= SubmitField('Vraag nieuw wachtwoord aan')
+
+    def validate_email(self, email):
+        user= User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('Er bestaat geen account met deze email. Registreer eerst.')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Maak een Wachtwoord', validators =[DataRequired()])
+    confirm_password = PasswordField('Confirmeer Wachtwoord', validators=[DataRequired(), EqualTo('password')])
+    submit= SubmitField('Reset Wachtwoord')

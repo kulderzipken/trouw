@@ -1,0 +1,26 @@
+virtualenv -p python3 env-trouw
+
+cd env-trouw/
+source bin/activate
+
+pip install flask
+
+pip install flask_sqlalchemy
+
+pip install flask-bcrypt
+
+pip install flask-login
+
+pip install flask-mail
+
+pip install Pillow
+
+pip install flask-wtf
+
+
+voor de applicatie te downloaden: 
+
+git clone https://github.com/kulderzipken/Trouw.git
+
+om de website te runnen op localhost:	> python run.py
+
