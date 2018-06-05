@@ -6,7 +6,6 @@ from flask_login import LoginManager
 from flask_mail import Mail
 
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7f229103fb8e309ea7cef1750e89d656'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trouwdb.db'

@@ -121,11 +121,18 @@ def account():
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    msg = Message('Password Reset Request', sender='trouwvanessajannes@dgmail.com', recipients=[user.email])
-    msg.body = f'''Om je wachtwoord te veranderen, bezoek de volgende link: 
+    msg = Message('Wachtwoord veranderen', sender='trouwvanessajannes@gmail.com', recipients=[user.email])
+    msg.body = f'''
+    
+    Om je wachtwoord te veranderen, bezoek de volgende link:
+    
     {url_for('reset_token', token=token, _external=True)}
 
     Indien je je wachtwoord niet wil veranderen, negeer dan deze mail.
+
+    Mvg
+
+    Jannes en Vanessa
     
     '''
     mail.send(msg)
