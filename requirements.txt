@@ -37,7 +37,7 @@ middleware==1.2.3
 numpy==1.14.3
 packaging==16.8
 Paste==2.0.3
-Pillow==5.1.0
+Pillow==6.2.0
 psycopg2==2.7
 pycparser==2.18
 Pygments==2.2.0
